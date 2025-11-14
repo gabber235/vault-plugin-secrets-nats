@@ -321,7 +321,7 @@ metadata:
 spec:
   size: 1
   # Use the custom vault image containing the NATS secrets plugin
-  image: ghcr.io/edgefarm/vault-plugin-secrets-nats/vault-with-nats-secrets:1.7.0
+  image: ghcr.io/gabber235/vault-plugin-secrets-nats/vault-with-nats-secrets:1.0.0
   config:
     disable_mlock: true
     plugin_directory: "/etc/vault/vault_plugins"
