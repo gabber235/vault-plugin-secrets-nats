@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/edgefarm/vault-plugin-secrets-nats/pkg/claims/user/v1alpha1"
-	"github.com/edgefarm/vault-plugin-secrets-nats/pkg/stm"
+	"github.com/gabber235/vault-plugin-secrets-nats/pkg/claims/user/v1alpha1"
+	"github.com/gabber235/vault-plugin-secrets-nats/pkg/stm"
 	"github.com/hashicorp/vault/sdk/framework"
 	"github.com/hashicorp/vault/sdk/logical"
 	"github.com/nats-io/jwt/v2"

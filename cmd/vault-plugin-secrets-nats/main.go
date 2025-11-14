@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	nats "github.com/edgefarm/vault-plugin-secrets-nats"
+	nats "github.com/gabber235/vault-plugin-secrets-nats"
 	"github.com/hashicorp/vault/api"
 	"github.com/hashicorp/vault/sdk/plugin"
 

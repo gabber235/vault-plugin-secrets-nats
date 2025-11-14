@@ -17,12 +17,12 @@ commands:
     GREY='\033[0;36m'
     BOLD='\033[1m'
     NC='\033[0m' # No Color
-    echo -e "${BGREEN}Usage of ${BRED}edgefarm.core:${NC}"
+    echo -e "${BGREEN}Usage of ${BRED}gabber235.core:${NC}"
     echo -e "${GREEN} General cluster commands:${NC}"
     echo -e "${BOLD}  devspace run create-kind-cluster                    ${GREY}Creates a local running Kubernetes cluster with kind${NC}"
     echo -e "${BOLD}  devspace run delete-kind-cluster                    ${GREY}Deletes the local running Kubernetes cluster with kind${NC}"
     echo -e "${BOLD}  devspace run-pipeline init                          ${GREY}Deploy some basic resources to the cluster${NC}"
-    echo -e "${GREEN} EdgeFarm related commands:${NC}"
+    echo -e "${GREEN} gabber235 related commands:${NC}"
     echo -e "${BOLD}  devspace run-pipeline deploy-vault                  ${GREY}Deploy the vault with NATS secrets plugin${NC}"
     echo -e "${BOLD}  devspace run-pipeline deploy-nats                   ${GREY}Deploy the deploy preconfigured a NATS server${NC}"
     echo -e "${BOLD}  devspace run-pipeline create-custom-nats-account    ${GREY}Create a custom NATS account and user${NC}"

@@ -1,5 +1,5 @@
 /*
-Copyright 2023 The EdgeFarm Authors.
+Copyright 2023 The gabber235 Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package v1alpha1
 import (
 	"fmt"
 
-	"github.com/edgefarm/vault-plugin-secrets-nats/pkg/claims/common"
+	"github.com/gabber235/vault-plugin-secrets-nats/pkg/claims/common"
 	"github.com/nats-io/jwt/v2"
 )
 

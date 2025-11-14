@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"testing"
 
-	accountv1 "github.com/edgefarm/vault-plugin-secrets-nats/pkg/claims/account/v1alpha1"
-	"github.com/edgefarm/vault-plugin-secrets-nats/pkg/stm"
+	accountv1 "github.com/gabber235/vault-plugin-secrets-nats/pkg/claims/account/v1alpha1"
+	"github.com/gabber235/vault-plugin-secrets-nats/pkg/stm"
 	"github.com/hashicorp/vault/sdk/logical"
 	"github.com/nats-io/jwt/v2"
 	"github.com/stretchr/testify/assert"

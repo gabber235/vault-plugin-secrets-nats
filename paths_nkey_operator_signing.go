@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/edgefarm/vault-plugin-secrets-nats/pkg/stm"
+	"github.com/gabber235/vault-plugin-secrets-nats/pkg/stm"
 	"github.com/hashicorp/vault/sdk/framework"
 	"github.com/hashicorp/vault/sdk/logical"
 	"github.com/nats-io/nkeys"

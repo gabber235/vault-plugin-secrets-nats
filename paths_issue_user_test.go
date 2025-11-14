@@ -14,9 +14,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gonum.org/v1/gonum/stat/combin"
 
-	"github.com/edgefarm/vault-plugin-secrets-nats/pkg/claims/common"
-	userv1 "github.com/edgefarm/vault-plugin-secrets-nats/pkg/claims/user/v1alpha1"
-	"github.com/edgefarm/vault-plugin-secrets-nats/pkg/stm"
+	"github.com/gabber235/vault-plugin-secrets-nats/pkg/claims/common"
+	userv1 "github.com/gabber235/vault-plugin-secrets-nats/pkg/claims/user/v1alpha1"
+	"github.com/gabber235/vault-plugin-secrets-nats/pkg/stm"
 )
 
 func TestCRUDUserIssue(t *testing.T) {

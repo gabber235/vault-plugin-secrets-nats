@@ -7,14 +7,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/edgefarm/vault-plugin-secrets-nats/pkg/resolver"
-	"github.com/edgefarm/vault-plugin-secrets-nats/pkg/stm"
+	"github.com/gabber235/vault-plugin-secrets-nats/pkg/resolver"
+	"github.com/gabber235/vault-plugin-secrets-nats/pkg/stm"
 	"github.com/hashicorp/vault/sdk/framework"
 	"github.com/hashicorp/vault/sdk/logical"
 	"github.com/nats-io/nkeys"
 	"github.com/rs/zerolog/log"
 
-	v1alpha1 "github.com/edgefarm/vault-plugin-secrets-nats/pkg/claims/account/v1alpha1"
+	v1alpha1 "github.com/gabber235/vault-plugin-secrets-nats/pkg/claims/account/v1alpha1"
 )
 
 type IssueAccountStorage struct {

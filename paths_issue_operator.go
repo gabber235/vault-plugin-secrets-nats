@@ -11,10 +11,10 @@ import (
 	"github.com/nats-io/nkeys"
 	"github.com/rs/zerolog/log"
 
-	accountv1 "github.com/edgefarm/vault-plugin-secrets-nats/pkg/claims/account/v1alpha1"
-	"github.com/edgefarm/vault-plugin-secrets-nats/pkg/claims/common"
-	operatorv1 "github.com/edgefarm/vault-plugin-secrets-nats/pkg/claims/operator/v1alpha1"
-	"github.com/edgefarm/vault-plugin-secrets-nats/pkg/stm"
+	accountv1 "github.com/gabber235/vault-plugin-secrets-nats/pkg/claims/account/v1alpha1"
+	"github.com/gabber235/vault-plugin-secrets-nats/pkg/claims/common"
+	operatorv1 "github.com/gabber235/vault-plugin-secrets-nats/pkg/claims/operator/v1alpha1"
+	"github.com/gabber235/vault-plugin-secrets-nats/pkg/stm"
 )
 
 type IssueOperatorStorage struct {

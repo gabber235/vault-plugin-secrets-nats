@@ -1,4 +1,4 @@
-module github.com/edgefarm/vault-plugin-secrets-nats
+module github.com/gabber235/vault-plugin-secrets-nats
 
 go 1.18
 
