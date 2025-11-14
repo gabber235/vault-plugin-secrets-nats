@@ -22,7 +22,7 @@ jobs:
       - name: Set up Go 1.21.10
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21.10'
+          go-version: "1.21.10"
 
       - name: Run Tests
         run: |
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: ['linux', 'windows', 'darwin']
+        os: ["linux", "windows", "darwin"]
         architecture: [amd64, arm64]
     steps:
       - name: Checkout
@@ -44,7 +44,7 @@ jobs:
       - name: Set up Go 1.21.10
         uses: actions/setup-go@v5
         with:
-          go-version: '1.21.10'
+          go-version: "1.21.10"
 
       - name: Build the artifacts
         run: |
@@ -71,7 +71,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "lts/*"
-      
+
       - name: Download built artifacts
         uses: actions/download-artifact@v4
         with:
@@ -81,7 +81,7 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_USER: siredmar
+          GITHUB_USER: ${{ github.actor }}
         run: |-
           #!/bin/bash
           set -e
