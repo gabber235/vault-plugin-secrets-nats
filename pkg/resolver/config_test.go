@@ -7,6 +7,7 @@ import (
 	"crypto/x509"
 	"crypto/x509/pkix"
 	"encoding/pem"
+	"flag"
 	"math/big"
 	"os"
 	"testing"
@@ -370,4 +371,85 @@ func TestBuildNatsTLSOptions_NoConfig(t *testing.T) {
 	opts, err := buildNatsTLSOptions()
 	assert.NoError(t, err)
 	assert.Nil(t, opts)
+}
+
+func TestSeparateFlags(t *testing.T) {
+	createVaultFlagSet := func() *flag.FlagSet {
+		fs := flag.NewFlagSet("vault plugin settings", flag.ContinueOnError)
+		fs.String("ca-cert", "", "")
+		fs.String("ca-path", "", "")
+		fs.String("client-cert", "", "")
+		fs.String("client-key", "", "")
+		fs.Bool("tls-skip-verify", false, "")
+		return fs
+	}
+
+	tests := []struct {
+		name          string
+		args          []string
+		expectedNats  []string
+		expectedVault []string
+	}{
+		{
+			name:          "only nats flags",
+			args:          []string{"-nats-tls-skip-verify", "-nats-tls-server-name", "nats.example.com"},
+			expectedNats:  []string{"-nats-tls-skip-verify", "-nats-tls-server-name", "nats.example.com"},
+			expectedVault: []string{},
+		},
+		{
+			name:          "only vault flags",
+			args:          []string{"-tls-skip-verify", "-ca-cert", "/path/to/ca.crt"},
+			expectedNats:  []string{},
+			expectedVault: []string{"-tls-skip-verify", "-ca-cert", "/path/to/ca.crt"},
+		},
+		{
+			name:          "mixed flags",
+			args:          []string{"-nats-tls-skip-verify", "-tls-skip-verify", "-nats-tls-server-name", "nats.example.com", "-ca-cert", "/path/to/ca.crt"},
+			expectedNats:  []string{"-nats-tls-skip-verify", "-nats-tls-server-name", "nats.example.com"},
+			expectedVault: []string{"-tls-skip-verify", "-ca-cert", "/path/to/ca.crt"},
+		},
+		{
+			name:          "nats flags with equals",
+			args:          []string{"-nats-tls-server-name=nats.example.com", "-tls-skip-verify"},
+			expectedNats:  []string{"-nats-tls-server-name=nats.example.com"},
+			expectedVault: []string{"-tls-skip-verify"},
+		},
+		{
+			name:          "nats flags with double dash",
+			args:          []string{"--nats-tls-skip-verify", "--tls-skip-verify"},
+			expectedNats:  []string{"--nats-tls-skip-verify"},
+			expectedVault: []string{"--tls-skip-verify"},
+		},
+		{
+			name:          "reproduces original error case",
+			args:          []string{"-nats-tls-skip-verify", "-nats-tls-server-name", "nats.sea"},
+			expectedNats:  []string{"-nats-tls-skip-verify", "-nats-tls-server-name", "nats.sea"},
+			expectedVault: []string{},
+		},
+		{
+			name:          "vault flags with equals",
+			args:          []string{"-ca-cert=/path/to/ca.crt", "-nats-tls-skip-verify"},
+			expectedNats:  []string{"-nats-tls-skip-verify"},
+			expectedVault: []string{"-ca-cert=/path/to/ca.crt"},
+		},
+		{
+			name:          "empty args",
+			args:          []string{},
+			expectedNats:  []string{},
+			expectedVault: []string{},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			config := &NatsPluginConfig{}
+			natsFlags := config.FlagSet()
+			vaultFlags := createVaultFlagSet()
+
+			natsArgs, vaultArgs := SeparateFlags(tt.args, natsFlags, vaultFlags)
+
+			assert.Equal(t, tt.expectedNats, natsArgs, "NATS args should match expected")
+			assert.Equal(t, tt.expectedVault, vaultArgs, "Vault args should match expected")
+		})
+	}
 }

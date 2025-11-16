@@ -170,3 +170,63 @@ func buildNatsTLSOptions() ([]nats.Option, error) {
 
 	return opts, nil
 }
+
+// buildFlagNameSet builds a map of flag names (with - and -- prefixes) from a FlagSet
+func buildFlagNameSet(fs *flag.FlagSet) map[string]bool {
+	flagNames := make(map[string]bool)
+	fs.VisitAll(func(f *flag.Flag) {
+		flagNames["-"+f.Name] = true
+		flagNames["--"+f.Name] = true
+	})
+	return flagNames
+}
+
+// extractFlagName extracts the flag name from an argument, handling both -flag and --flag formats
+// and -flag=value syntax
+func extractFlagName(arg string) string {
+	if strings.HasPrefix(arg, "--") {
+		parts := strings.SplitN(arg[2:], "=", 2)
+		return "--" + parts[0]
+	} else if strings.HasPrefix(arg, "-") {
+		parts := strings.SplitN(arg[1:], "=", 2)
+		return "-" + parts[0]
+	}
+	return arg
+}
+
+// SeparateFlags separates command-line arguments into buckets for different flag sets.
+// It takes the full argument list and both flag sets, then routes each flag to the
+// appropriate bucket. This allows multiple flag parsers to coexist without conflicts.
+func SeparateFlags(args []string, natsFlags, vaultFlags *flag.FlagSet) (natsArgs, vaultArgs []string) {
+	natsFlagNames := buildFlagNameSet(natsFlags)
+	vaultFlagNames := buildFlagNameSet(vaultFlags)
+
+	natsArgs = make([]string, 0)
+	vaultArgs = make([]string, 0)
+
+	i := 0
+	for i < len(args) {
+		arg := args[i]
+		flagName := extractFlagName(arg)
+
+		if natsFlagNames[flagName] {
+			natsArgs = append(natsArgs, arg)
+			i++
+			if !strings.Contains(arg, "=") && i < len(args) && !strings.HasPrefix(args[i], "-") {
+				natsArgs = append(natsArgs, args[i])
+				i++
+			}
+		} else if vaultFlagNames[flagName] {
+			vaultArgs = append(vaultArgs, arg)
+			i++
+			if !strings.Contains(arg, "=") && i < len(args) && !strings.HasPrefix(args[i], "-") {
+				vaultArgs = append(vaultArgs, args[i])
+				i++
+			}
+		} else {
+			i++
+		}
+	}
+
+	return natsArgs, vaultArgs
+}

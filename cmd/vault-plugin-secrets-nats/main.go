@@ -15,19 +15,23 @@ import (
 func main() {
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 
-	apiClientMeta := &api.PluginAPIClientMeta{}
-	flags := apiClientMeta.FlagSet()
-	flags.Parse(os.Args[1:])
+	args := os.Args[1:]
 
 	natsConfig := &resolver.NatsPluginConfig{}
 	natsFlags := natsConfig.FlagSet()
-	_ = natsFlags.Parse(os.Args[1:])
 
+	apiClientMeta := &api.PluginAPIClientMeta{}
+	vaultFlags := apiClientMeta.FlagSet()
+
+	natsArgs, vaultArgs := resolver.SeparateFlags(args, natsFlags, vaultFlags)
+
+	_ = natsFlags.Parse(natsArgs)
 	natsTLSConfig := natsConfig.GetTLSConfig()
 	if natsTLSConfig != nil {
 		resolver.SetNatsTLSConfig(natsTLSConfig)
 	}
 
+	_ = vaultFlags.Parse(vaultArgs)
 	tlsConfig := apiClientMeta.GetTLSConfig()
 	tlsProviderFunc := api.VaultPluginTLSProvider(tlsConfig)
 
