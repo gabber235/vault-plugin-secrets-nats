@@ -358,7 +358,7 @@ metadata:
 spec:
   size: 1
   # Use the custom vault image containing the NATS secrets plugin
-  image: ghcr.io/gabber235/vault-plugin-secrets-nats/vault-with-nats-secrets:1.0.0
+  image: ghcr.io/gabber235/vault-plugin-secrets-nats/vault-with-nats-secrets:1.1.0
   config:
     disable_mlock: true
     plugin_directory: "/etc/vault/vault_plugins"
@@ -370,7 +370,7 @@ spec:
     plugins:
     - plugin_name: vault-plugin-secrets-nats
       command: vault-plugin-secrets-nats -tls-skip-verify -ca-cert=/vault/tls/ca.crt -nats-tls-skip-verify -nats-ca-cert=/vault/tls/nats-ca.crt
-      sha256: 35214fb5f4d48d0012d07c98fd6d70e1c3ba451799d014def96c23a14e7c713f
+      sha256: 06485b6af8e7470da2eb19606a80a2b8ca75987aaefab5509b532b0156a75ff1
       type: secret
     secrets:
     - path: nats-secrets
