@@ -21,7 +21,7 @@ func (r *Resolver) CloseConnection() {
 
 func isNatsUrl(url string) bool {
 	url = strings.ToLower(strings.TrimSpace(url))
-	return strings.HasPrefix(url, "nats://") || strings.HasPrefix(url, ",nats://")
+	return strings.HasPrefix(url, "nats://") || strings.HasPrefix(url, ",nats://") || strings.HasPrefix(url, "tls://") || strings.HasPrefix(url, ",tls://")
 }
 
 func createConnection(url string, userJWT []byte, userKp nkeys.KeyPair) (*nats.Conn, error) {
@@ -96,7 +96,7 @@ func isValidURL(s string) bool {
 		return false
 	}
 	scheme := strings.ToLower(u.Scheme)
-	supported := []string{"http", "https", "nats"}
+	supported := []string{"http", "https", "nats", "tls"}
 
 	ok := false
 	for _, v := range supported {

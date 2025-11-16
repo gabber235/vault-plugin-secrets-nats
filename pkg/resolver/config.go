@@ -108,7 +108,6 @@ func buildNatsTLSOptions() ([]nats.Option, error) {
 			tlsConfig.ServerName = natsTLSConfig.TLSServerName
 		}
 
-		// Handle CAPath - load CA certs from directory
 		if natsTLSConfig.CAPath != "" {
 			rootConfig := &rootcerts.Config{
 				CAPath: natsTLSConfig.CAPath,
