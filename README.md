@@ -303,7 +303,44 @@ vault plugin register -sha256 ${SHA256SUM} secret vault-plugin-secrets-nats
 vault secrets enable -path=nats-secrets vault-plugin-secrets-nats
 ```
 
-**Note: you might use the `-tls-skip-verify` flag if you are using a self-signed certificate.**
+**Note: you might use the `-tls-skip-verify` flag if you are using a self-signed certificate for Vault plugin communication.**
+
+### NATS TLS Configuration
+
+The plugin supports TLS configuration for connections to NATS servers. There are two separate TLS configurations:
+
+1. **Vault Plugin TLS flags** (e.g., `-tls-skip-verify`, `-ca-cert`): These configure TLS for communication between the plugin and Vault server.
+2. **NATS TLS flags** (e.g., `-nats-tls-skip-verify`, `-nats-ca-cert`): These configure TLS for connections from the plugin to NATS servers.
+
+**Note:** Go's flag package accepts both single dash (`-`) and double dash (`--`). The examples below use single dash, but double dash also works.
+
+#### Available NATS TLS Flags
+
+- `-nats-ca-cert`: Path to a PEM-encoded CA cert file or comma-separated list of files to verify the NATS server SSL certificate
+- `-nats-ca-path`: Path to a directory of PEM-encoded CA cert files to verify the NATS server SSL certificate
+- `-nats-client-cert`: Path to the client certificate for NATS communication
+- `-nats-client-key`: Path to the client private key for NATS communication
+- `-nats-tls-server-name`: SNI server name to use when connecting via TLS
+- `-nats-tls-skip-verify`: Skip TLS verification for NATS connections (not recommended for production)
+
+#### Example Usage
+
+```bash
+# With NATS TLS skip verify
+vault-plugin-secrets-nats -nats-tls-skip-verify
+
+# With NATS CA certificate
+vault-plugin-secrets-nats -nats-ca-cert=/path/to/ca.crt
+
+# With multiple CA certificates
+vault-plugin-secrets-nats -nats-ca-cert=/path/to/ca1.crt,/path/to/ca2.crt
+
+# With client certificates
+vault-plugin-secrets-nats -nats-client-cert=/path/to/client.crt -nats-client-key=/path/to/client.key
+
+# Combined Vault and NATS TLS configuration
+vault-plugin-secrets-nats -tls-skip-verify -nats-ca-cert=/path/to/nats-ca.crt
+```
 
 ### Install from OCI image using bank-vaults in Kubernetes
 
@@ -332,7 +369,7 @@ spec:
   externalConfig:
     plugins:
     - plugin_name: vault-plugin-secrets-nats
-      command: vault-plugin-secrets-nats --tls-skip-verify --ca-cert=/vault/tls/ca.crt
+      command: vault-plugin-secrets-nats -tls-skip-verify -ca-cert=/vault/tls/ca.crt -nats-tls-skip-verify -nats-ca-cert=/vault/tls/nats-ca.crt
       sha256: 35214fb5f4d48d0012d07c98fd6d70e1c3ba451799d014def96c23a14e7c713f
       type: secret
     secrets:

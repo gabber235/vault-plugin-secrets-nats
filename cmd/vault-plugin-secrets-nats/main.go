@@ -4,6 +4,7 @@ import (
 	"os"
 
 	nats "github.com/gabber235/vault-plugin-secrets-nats"
+	"github.com/gabber235/vault-plugin-secrets-nats/pkg/resolver"
 	"github.com/hashicorp/vault/api"
 	"github.com/hashicorp/vault/sdk/plugin"
 
@@ -17,6 +18,15 @@ func main() {
 	apiClientMeta := &api.PluginAPIClientMeta{}
 	flags := apiClientMeta.FlagSet()
 	flags.Parse(os.Args[1:])
+
+	natsConfig := &resolver.NatsPluginConfig{}
+	natsFlags := natsConfig.FlagSet()
+	_ = natsFlags.Parse(os.Args[1:])
+
+	natsTLSConfig := natsConfig.GetTLSConfig()
+	if natsTLSConfig != nil {
+		resolver.SetNatsTLSConfig(natsTLSConfig)
+	}
 
 	tlsConfig := apiClientMeta.GetTLSConfig()
 	tlsProviderFunc := api.VaultPluginTLSProvider(tlsConfig)

@@ -53,10 +53,14 @@ func createDefaultToolOptions(name string, o ...nats.Option) []nats.Option {
 
 	opts := []nats.Option{nats.Name(name)}
 	opts = append(opts, nats.Timeout(connectTimeout))
-	// todo: add tls
-	// opts = append(opts, rootCAsNats)
-	// opts = append(opts, tlsKeyNats)
-	// opts = append(opts, tlsCertNats)
+
+	tlsOpts, err := buildNatsTLSOptions()
+	if err != nil {
+		log.Error().Err(err).Msg("failed to build NATS TLS options")
+	} else if tlsOpts != nil {
+		opts = append(opts, tlsOpts...)
+	}
+
 	opts = append(opts, nats.ReconnectWait(reconnectDelay))
 	opts = append(opts, nats.MaxReconnects(int(totalWait/reconnectDelay)))
 	opts = append(opts, nats.DisconnectErrHandler(func(nc *nats.Conn, err error) {
