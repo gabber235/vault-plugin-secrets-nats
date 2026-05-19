@@ -28,6 +28,9 @@ build/vault/plugins
 vault-plugin-secrets-nats
 result
 
+# macOS
+.DS_Store
+
 
 # Ignore DevSpace cache and log folder
 .devspace/
